@@ -1,11 +1,39 @@
 "use client"
 
-import { useRef, useMemo } from "react"
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
+import { useRef, useMemo, Suspense } from "react"
+import { Canvas, useFrame, useThree, extend } from "@react-three/fiber"
 import { OrbitControls, Text, Environment, Stars } from "@react-three/drei"
 import { useTaskContext } from "@/contexts/task-context"
 import { useTheme } from "@/contexts/theme-context"
 import type * as THREE from "three"
+
+// @ts-ignore - Suppress TypeScript errors for Three.js JSX elements
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
+}
+
+// Extend R3F catalog with Three.js objects
+extend({})
+
+// Error boundary component for 3D scene
+function SceneErrorBoundary({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={
+      <div className="h-full flex items-center justify-center text-white/60">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🌀</div>
+          <p>Loading 3D Universe...</p>
+        </div>
+      </div>
+    }>
+      {children}
+    </Suspense>
+  )
+}
 
 function TaskSphere({ task, position }: { task: any; position: [number, number, number] }) {
   const meshRef = useRef<THREE.Mesh>(null)
@@ -29,13 +57,13 @@ function TaskSphere({ task, position }: { task: any; position: [number, number, 
 
   const scale = useMemo(() => {
     const baseScale = task.completed ? 0.8 : 1
-    const priorityScale = {
+    const priorityScale: Record<string, number> = {
       urgent: 1.4,
       high: 1.2,
       medium: 1,
       low: 0.8,
-    }[task.priority]
-    return baseScale * priorityScale
+    }
+    return baseScale * (priorityScale[task.priority] || 1)
   }, [task.completed, task.priority])
 
   useFrame((state) => {
@@ -165,17 +193,36 @@ export function TaskVisualization() {
 
   return (
     <div className="h-full rounded-lg overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10">
-      <Canvas camera={{ position: [10, 5, 10], fov: 60 }}>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#8b5cf6" />
+      <SceneErrorBoundary>
+        <Canvas 
+          camera={{ position: [10, 5, 10], fov: 60 }}
+          gl={{ antialias: true, alpha: true }}
+          onCreated={(state) => {
+            // Ensure the canvas is properly initialized
+            state.gl.setClearColor('#000000', 0)
+          }}
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.4} />
+            <pointLight position={[10, 10, 10]} intensity={1} />
+            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#8b5cf6" />
 
-        <Environment preset="night" />
+            <Environment preset="night" />
 
-        <TaskUniverse />
+            <TaskUniverse />
 
-        <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} minDistance={5} maxDistance={30} />
-      </Canvas>
+            <OrbitControls 
+              enablePan={true} 
+              enableZoom={true} 
+              enableRotate={true} 
+              minDistance={5} 
+              maxDistance={30}
+              enableDamping={true}
+              dampingFactor={0.05}
+            />
+          </Suspense>
+        </Canvas>
+      </SceneErrorBoundary>
 
       <div className="absolute bottom-4 left-4 text-white/60 text-sm">
         <p>🖱️ Drag to rotate • 🔍 Scroll to zoom • Click spheres to toggle tasks</p>
