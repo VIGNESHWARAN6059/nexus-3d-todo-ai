@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
-import { Calendar } from "@/components/ui/calendar"
+// import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Plus, CalendarIcon, Mic, Sparkles, X } from "lucide-react"
 import { format } from "date-fns"
@@ -207,13 +207,16 @@ export function TaskInput() {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0 bg-black/80 backdrop-blur-md border-white/20">
-                  <Calendar
+                  <div className="p-4 text-white text-center">
+                    Calendar temporarily disabled
+                  </div>
+                  {/* <Calendar
                     mode="single"
                     selected={dueDate}
                     onSelect={setDueDate}
                     initialFocus
                     className="text-white"
-                  />
+                  /> */}
                 </PopoverContent>
               </Popover>
             </div>

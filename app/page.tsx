@@ -1,12 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import dynamic from "next/dynamic"
 import { TaskProvider } from "@/contexts/task-context"
 import { ThemeProvider } from "@/contexts/theme-context"
 import { Header } from "@/components/header"
 import { TaskInput } from "@/components/task-input"
 import { TaskList } from "@/components/task-list"
-import { TaskVisualization } from "@/components/task-visualization"
+// import { TaskVisualization } from "@/components/task-visualization"
 import { StatsPanel } from "@/components/stats-panel"
 import { AchievementSystem } from "@/components/achievement-system"
 import { FocusMode } from "@/components/focus-mode"
@@ -14,6 +15,19 @@ import { VoiceControl } from "@/components/voice-control"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Eye, List, BarChart3, Trophy, Focus } from "lucide-react"
+
+// Dynamically import TaskVisualization to prevent SSR issues
+const TaskVisualization = dynamic(
+  () => import("@/components/task-visualization").then(mod => ({ default: mod.TaskVisualization })),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="h-[600px] flex items-center justify-center bg-white/5 rounded-lg backdrop-blur-sm">
+        <div className="text-white text-lg">Loading 3D Universe...</div>
+      </div>
+    )
+  }
+)
 
 export default function UltraAdvancedTodoApp() {
   const [activeView, setActiveView] = useState("list")
