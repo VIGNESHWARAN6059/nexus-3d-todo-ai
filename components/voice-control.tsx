@@ -6,150 +6,107 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Mic, MicOff, Volume2 } from "lucide-react"
-import type SpeechRecognition from "speech-recognition"
+
+// Extend global Window interface
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 
 export function VoiceControl() {
   const { dispatch } = useTaskContext()
   const [isListening, setIsListening] = useState(false)
   const [transcript, setTranscript] = useState("")
   const [isSupported, setIsSupported] = useState(false)
-  const [lastCommand, setLastCommand] = useState("")
-
-  const recognition = useRef<SpeechRecognition | null>(null)
-  const synthesis = useRef<SpeechSynthesis | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const recognition = useRef<any>(null)
 
   useEffect(() => {
-    // Check for speech recognition support
-    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-      setIsSupported(true)
+    setMounted(true)
+    
+    if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      recognition.current = new SpeechRecognition()
-      recognition.current.continuous = true
-      recognition.current.interimResults = true
-      recognition.current.lang = "en-US"
+      setIsSupported(!!SpeechRecognition)
+      
+      if (SpeechRecognition) {
+        recognition.current = new SpeechRecognition()
+        recognition.current.continuous = true
+        recognition.current.interimResults = true
+        recognition.current.lang = 'en-US'
 
-      recognition.current.onstart = () => {
-        setIsListening(true)
-      }
-
-      recognition.current.onresult = (event) => {
-        let finalTranscript = ""
-        let interimTranscript = ""
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript
-          if (event.results[i].isFinal) {
-            finalTranscript += transcript
-          } else {
-            interimTranscript += transcript
+        recognition.current.onresult = (event: any) => {
+          const current = event.resultIndex
+          const transcript = event.results[current][0].transcript
+          setTranscript(transcript)
+          
+          if (event.results[current].isFinal) {
+            processVoiceCommand(transcript)
           }
         }
 
-        setTranscript(interimTranscript || finalTranscript)
-
-        if (finalTranscript) {
-          processVoiceCommand(finalTranscript.toLowerCase().trim())
+        recognition.current.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error)
+          setIsListening(false)
         }
-      }
 
-      recognition.current.onerror = (event) => {
-        console.error("Speech recognition error:", event.error)
-        setIsListening(false)
-      }
-
-      recognition.current.onend = () => {
-        setIsListening(false)
-      }
-    }
-
-    // Check for speech synthesis support
-    if ("speechSynthesis" in window) {
-      synthesis.current = window.speechSynthesis
-    }
-
-    return () => {
-      if (recognition.current) {
-        recognition.current.stop()
+        recognition.current.onend = () => {
+          setIsListening(false)
+        }
       }
     }
   }, [])
 
   const processVoiceCommand = (command: string) => {
-    setLastCommand(command)
-
-    // Add task commands
-    if (command.startsWith("add task") || command.startsWith("create task") || command.startsWith("new task")) {
-      const taskTitle = command.replace(/^(add task|create task|new task)\s*/, "")
-      if (taskTitle) {
+    const lowercaseCommand = command.toLowerCase().trim()
+    
+    if (lowercaseCommand.includes("add task") || lowercaseCommand.includes("create task")) {
+      const taskText = lowercaseCommand.replace(/add task|create task/g, "").trim()
+      if (taskText) {
         dispatch({
           type: "ADD_TASK",
           payload: {
-            title: taskTitle,
+            title: taskText,
             completed: false,
             priority: "medium",
-            category: "Personal",
+            category: "general",
             tags: [],
-            energy: 5,
-          },
+            energy: 75 // Fixed energy value for consistency
+          }
         })
-        speak(`Added task: ${taskTitle}`)
+        speak(`Task added: ${taskText}`)
       }
+    } else if (lowercaseCommand.includes("complete") || lowercaseCommand.includes("finish")) {
+      // Since there's no complete all action, we'll just provide feedback
+      speak("To complete tasks, please use the interface or say 'toggle task'")
+    } else if (lowercaseCommand.includes("clear") || lowercaseCommand.includes("delete all")) {
+      // Since there's no clear completed action, we'll just provide feedback
+      speak("To clear tasks, please use the interface")
+    } else if (lowercaseCommand.includes("show all")) {
+      dispatch({ type: "SET_FILTER", payload: "all" })
+      speak("Showing all tasks")
+    } else if (lowercaseCommand.includes("show active")) {
+      dispatch({ type: "SET_FILTER", payload: "active" })
+      speak("Showing active tasks")
+    } else if (lowercaseCommand.includes("show completed")) {
+      dispatch({ type: "SET_FILTER", payload: "completed" })
+      speak("Showing completed tasks")
+    } else if (lowercaseCommand.includes("focus mode")) {
+      speak("Focus mode activated")
+    } else {
+      speak("Command not recognized. Try saying 'add task' followed by your task description.")
     }
-
-    // Priority-based task creation
-    else if (command.includes("urgent task")) {
-      const taskTitle = command.replace(/.*urgent task\s*/, "")
-      if (taskTitle) {
-        dispatch({
-          type: "ADD_TASK",
-          payload: {
-            title: taskTitle,
-            completed: false,
-            priority: "urgent",
-            category: "Personal",
-            tags: [],
-            energy: 8,
-          },
-        })
-        speak(`Added urgent task: ${taskTitle}`)
-      }
-    }
-
-    // Show stats
-    else if (command.includes("show stats") || command.includes("my stats")) {
-      speak("Opening your productivity statistics")
-    }
-
-    // Focus mode
-    else if (command.includes("focus mode") || command.includes("start focus")) {
-      speak("Activating focus mode")
-    }
-
-    // Help command
-    else if (command.includes("help") || command.includes("what can you do")) {
-      speak(
-        'I can help you add tasks, set priorities, show statistics, and activate focus mode. Try saying "add task" followed by your task description.',
-      )
-    }
-
-    // Unknown command
-    else {
-      speak("I didn't understand that command. Try saying 'help' to see what I can do.")
-    }
-
-    // Clear transcript after processing
-    setTimeout(() => {
-      setTranscript("")
-    }, 2000)
+    
+    setTranscript("")
   }
 
   const speak = (text: string) => {
-    if (synthesis.current) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text)
-      utterance.rate = 0.9
+      utterance.rate = 0.8
       utterance.pitch = 1
-      utterance.volume = 0.8
-      synthesis.current.speak(utterance)
+      window.speechSynthesis.speak(utterance)
     }
   }
 
@@ -158,63 +115,76 @@ export function VoiceControl() {
 
     if (isListening) {
       recognition.current.stop()
+      setIsListening(false)
     } else {
       recognition.current.start()
+      setIsListening(true)
     }
   }
 
+  if (!mounted) {
+    return null // Avoid hydration mismatch
+  }
+
   if (!isSupported) {
-    return null
+    return (
+      <Card className="p-4">
+        <div className="text-center text-muted-foreground">
+          <Mic className="h-8 w-8 mx-auto mb-2 opacity-50" />
+          <p>Voice control not supported in this browser</p>
+        </div>
+      </Card>
+    )
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <div className="flex flex-col items-end space-y-2">
-        {/* Transcript Display */}
-        {(transcript || lastCommand) && (
-          <Card className="bg-black/80 backdrop-blur-md border-white/20 p-3 max-w-xs">
-            {transcript && (
-              <div className="text-white text-sm mb-2">
-                <Badge className="bg-blue-500/20 text-blue-300 mb-1">Listening...</Badge>
-                <p>"{transcript}"</p>
-              </div>
-            )}
-            {lastCommand && !transcript && (
-              <div className="text-white text-sm">
-                <Badge className="bg-green-500/20 text-green-300 mb-1">Processed</Badge>
-                <p>"{lastCommand}"</p>
-              </div>
-            )}
-          </Card>
-        )}
-
-        {/* Voice Control Button */}
+    <Card className="p-4 space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold flex items-center gap-2">
+          <Volume2 className="h-5 w-5" />
+          Voice Control
+        </h3>
+        <Badge variant={isListening ? "default" : "secondary"}>
+          {isListening ? "Listening..." : "Ready"}
+        </Badge>
+      </div>
+      
+      <div className="space-y-2">
         <Button
           onClick={toggleListening}
-          className={`w-14 h-14 rounded-full ${
-            isListening
-              ? "bg-red-500 hover:bg-red-600 animate-pulse"
-              : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-          } shadow-lg`}
+          variant={isListening ? "destructive" : "default"}
+          className="w-full"
         >
-          {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
+          {isListening ? (
+            <>
+              <MicOff className="h-4 w-4 mr-2" />
+              Stop Listening
+            </>
+          ) : (
+            <>
+              <Mic className="h-4 w-4 mr-2" />
+              Start Listening
+            </>
+          )}
         </Button>
-
-        {/* Voice Commands Help */}
-        <Card className="bg-black/80 backdrop-blur-md border-white/20 p-3 max-w-xs text-xs text-white/70">
-          <div className="flex items-center mb-2">
-            <Volume2 className="w-4 h-4 mr-1" />
-            <span className="font-semibold">Voice Commands</span>
+        
+        {transcript && (
+          <div className="p-2 bg-muted rounded text-sm">
+            <strong>Transcript:</strong> {transcript}
           </div>
-          <ul className="space-y-1">
-            <li>"Add task [description]"</li>
-            <li>"Urgent task [description]"</li>
-            <li>"Show stats"</li>
-            <li>"Focus mode"</li>
-            <li>"Help"</li>
-          </ul>
-        </Card>
+        )}
       </div>
-    </div>
+      
+      <div className="text-xs text-muted-foreground space-y-1">
+        <p><strong>Voice Commands:</strong></p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>"Add task [description]" - Create a new task</li>
+          <li>"Show all" - Show all tasks</li>
+          <li>"Show active" - Show active tasks</li>
+          <li>"Show completed" - Show completed tasks</li>
+          <li>"Focus mode" - Activate focus mode</li>
+        </ul>
+      </div>
+    </Card>
   )
 }

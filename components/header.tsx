@@ -19,9 +19,12 @@ export function Header() {
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center">
                 <Target className="w-4 h-4 text-white" />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Ultra Todo
-              </h1>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                  Nexus 3D Todo AI
+                </h1>
+                <p className="text-xs text-white/60">Developed by Ahsan Khizar</p>
+              </div>
             </div>
 
             <Badge variant="secondary" className="bg-white/10 text-white border-white/20">

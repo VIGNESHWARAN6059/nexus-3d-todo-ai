@@ -52,21 +52,32 @@ const themes = {
   },
 }
 
-const ThemeContext = createContext<ThemeContextType | null>(null)
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>("cosmic")
+  const [isHydrated, setIsHydrated] = useState(false)
 
+  // Handle hydration
   useEffect(() => {
+    setIsHydrated(true)
+  }, [])
+
+  // Load theme from localStorage on mount (client-side only)
+  useEffect(() => {
+    if (!isHydrated) return
+    
     const savedTheme = localStorage.getItem("ultra-todo-theme") as Theme
     if (savedTheme && themes[savedTheme]) {
       setTheme(savedTheme)
     }
-  }, [])
+  }, [isHydrated])
 
+  // Save theme to localStorage whenever theme changes (client-side only)
   useEffect(() => {
+    if (!isHydrated) return
     localStorage.setItem("ultra-todo-theme", theme)
-  }, [theme])
+  }, [theme, isHydrated])
 
   return <ThemeContext.Provider value={{ theme, setTheme, themes }}>{children}</ThemeContext.Provider>
 }

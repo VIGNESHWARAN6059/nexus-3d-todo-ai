@@ -1,7 +1,9 @@
 {
-  "name": "my-v0-project",
+  "name": "nexus-3d-todo-ai",
   "version": "0.1.0",
   "private": true,
+  "author": "Ahsan Khizar",
+  "description": "Ultra-Advanced To-Do List with 3D visualization, AI-powered prioritization, voice control, and gamification - Developed by Ahsan Khizar",
   "scripts": {
     "build": "next build",
     "dev": "next dev",

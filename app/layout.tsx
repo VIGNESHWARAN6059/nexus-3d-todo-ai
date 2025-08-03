@@ -4,9 +4,9 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'Ultra-Advanced To-Do List - Nexus 3D',
+  description: 'Revolutionary task management with 3D visualization, AI-powered prioritization, and voice control. Developed by Ahsan Khizar.',
+  generator: 'Developed by Ahsan Khizar',
 }
 
 export default function RootLayout({
