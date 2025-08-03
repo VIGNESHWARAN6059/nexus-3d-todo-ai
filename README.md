@@ -307,7 +307,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Need help?** 
 
-- 📧 **Email**: [ahsankhizar5@gmail.com](mailto:ahsankhizar5@gmail.com)
+- 📧 **Email**: [ahsankhizar1075@gmail.com](mailto:ahsankhizar1075@gmail.com)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/ahsankhizar5/nexus-3d-todo-ai/issues)
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/ahsankhizar5/nexus-3d-todo-ai/discussions)
 
